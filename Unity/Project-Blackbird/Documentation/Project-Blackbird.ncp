@@ -1,0 +1,48 @@
+<Project>
+  <Name>Project-Blackbird</Name>
+  <ProjectItem type="NClass.DiagramEditor.ClassDiagram.Diagram" assembly="NClass.DiagramEditor, Version=2.4.1823.0, Culture=neutral, PublicKeyToken=null">
+    <Name>Dialogue</Name>
+    <Language>CSharp</Language>
+    <Entities>
+      <Entity type="Class">
+        <Name>Dialogue_UI</Name>
+        <Access>Public</Access>
+        <Location left="10" top="10" />
+        <Size width="281" height="236" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">public GameObject dialogueText</Member>
+        <Member type="Field">public Text nameText</Member>
+        <Member type="Field">public Text dialogueText</Member>
+        <Member type="Field">bool end</Member>
+        <Member type="Field">bool loaded</Member>
+        <Member type="Method">public void NextDialogue(Dialogue_Pcx pcx)</Member>
+        <Member type="Method">public void EndDialogue()</Member>
+        <Member type="Method">public void Click()</Member>
+        <Member type="Method">IEnumerator textLoad(string dialogue)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>Dialogue_Pcx</Name>
+        <Access>Public</Access>
+        <Location left="10" top="350" />
+        <Size width="329" height="147" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">public string name</Member>
+        <Member type="Field">public string dialogue</Member>
+        <Member type="Field">public bool end</Member>
+        <Member type="Constructor">public Dialogue_Pcx(string _name, string _dialogue, bool _end)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+    </Entities>
+    <Relationships>
+      <Relationship type="Association" first="0" second="1">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+    </Relationships>
+  </ProjectItem>
+</Project>
