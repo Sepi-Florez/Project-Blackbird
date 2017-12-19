@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class Dialogue_UI : MonoBehaviour {
+public class DialogueManager : MonoBehaviour {
     //Main Variables
-    public static Dialogue_UI thisManager;
+    public static DialogueManager thisManager;
 
     private Dialogue currentDialogue;
 
@@ -21,6 +22,8 @@ public class Dialogue_UI : MonoBehaviour {
     bool asking = false;
 
     string currentSentence;
+
+    List<UnityEvent> events = new List<UnityEvent>();
 
     //Anwers
     public Transform answerPanel;
@@ -40,7 +43,6 @@ public class Dialogue_UI : MonoBehaviour {
         }
     }
     #endregion
-
     // Registers if players pressed the desired button or chat window to procceed with the dialogue. If the dialogue is at its end, this will call the EndDialogue function
     public void Click() {
         NextDialogue();
@@ -54,6 +56,7 @@ public class Dialogue_UI : MonoBehaviour {
         foreach(string sentence in dialogue.sentences) {
             sentences.Enqueue(sentence);
         }
+        events.Add(currentDialogue.onEnd);
         NextDialogue();
     }
     //Changes Dialogue to the next sentence in queue or if the previous sentence isn't done loading yet it will complete it.
@@ -66,12 +69,12 @@ public class Dialogue_UI : MonoBehaviour {
             print("Loading next sentence");
             return;
         }
-        if(sentences.Count == 0 && currentDialogue.options) {
+        if(sentences.Count == 0 && currentDialogue.options && !asking) {
             print("Loading Answers");
             ActivateAnswers(currentDialogue.answers.Length);
             return;
         }
-        else if(sentences.Count == 0) {
+        else if(sentences.Count == 0 && !asking) {
             EndDialogue();
             return;
         }
@@ -100,7 +103,13 @@ public class Dialogue_UI : MonoBehaviour {
     }
     //Destroys dialogue object
     public void EndDialogue() {
+        foreach(UnityEvent ev in events){
+            ev.Invoke();
+        }
         Destroy(dialogueObject);
+    }
+    public void Test() {
+        print("Event is activated!");
     }
 
     //Fills the Dialogue box with the next dialogue char for char

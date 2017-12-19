@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+[System.Serializable]
 public class DialogueTrigger : MonoBehaviour {
+    [SerializeField]
     public Dialogue dialogue;
-    public string[] h;
     
     public void TriggerDialogue() {
-        Dialogue_UI.thisManager.StartDialogue(dialogue);
+        DialogueManager.thisManager.StartDialogue(dialogue);
     }
 }
