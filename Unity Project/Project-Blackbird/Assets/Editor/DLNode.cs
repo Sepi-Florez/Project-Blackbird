@@ -4,31 +4,69 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.Events;
 
-public class DLNode : BaseDLInputNode {
-    public string name;
+public class DLNode : ScriptableObject{
+
+    //Base Node Variables
+    public Rect rect;
+    public bool hasInputs = false;
+    public string windowTitle = " ";
+
+    public enum NodeType { Sentences, Answers, Event}
+    public NodeType nodeType = new NodeType();
+
+    //General
+    public string npcName;
+
+    //Sentences
     public string[] sentences;
-    public bool _continue;
-    public Dialogue nextDialogue;
 
+    //Answers
+    public string[] answers;
+    public Dialogue[] answerDialogues;
 
+    //Event
+    public UnityEvent onEnd = new UnityEvent();
 
-    public override void DrawWindow() {
-        base.DrawWindow();
-        base.windowTitle = "Dialogue";
+    public List<ConnectionPoint> points = new List<ConnectionPoint>();
+
+    public void DrawWindow() {
         //Serializing Objects/Properties
         DLNode thisNode = this;
         SerializedObject serializedObject = new UnityEditor.SerializedObject(thisNode);
-        SerializedProperty dl = serializedObject.FindProperty("sentences");
-        SerializedProperty nd = serializedObject.FindProperty("nextDialogue");
+        SerializedProperty st = serializedObject.FindProperty("sentences");
+        SerializedProperty ans = serializedObject.FindProperty("answers");
+        SerializedProperty eve = serializedObject.FindProperty("onEnd");
         // End Serializing Objects/Properties
-        name = EditorGUILayout.TextField("NPC name", name);
-        EditorGUILayout.PropertyField(dl, true);
-        _continue = EditorGUILayout.Toggle("Continue", _continue);
-        if (_continue) {
-            EditorGUILayout.PropertyField(nd);
+
+
+        nodeType = (NodeType)EditorGUILayout.EnumPopup("Node Type", nodeType);
+
+        switch (nodeType) {
+            case (NodeType)0:
+                npcName = EditorGUILayout.TextField("NPC name", npcName);
+                windowTitle = "Sentences : " + npcName ;
+                serializedObject.Update();
+                EditorGUILayout.PropertyField(st, true);
+                serializedObject.ApplyModifiedProperties();
+                break;
+            case (NodeType)1:
+                windowTitle = "Answers";
+                serializedObject.Update();
+                EditorGUILayout.PropertyField(ans, true);
+                serializedObject.ApplyModifiedProperties();
+                break;
+            case (NodeType)2:
+                windowTitle = "Event";
+                EditorGUILayout.PropertyField(eve, true);
+                break;
         }
+        
     }
-    public override void DrawCurves() {
-        Debug.Log("Hary");
+    public void DrawCurves() {
+
+    }
+
+    public virtual void NodeDeleted(DLNode node) {
+
     }
 }

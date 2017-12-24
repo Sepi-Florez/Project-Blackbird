@@ -5,11 +5,11 @@ using UnityEditor;
 
 public class DLNodeEditor : EditorWindow {
 
-    private List<BaseDLNode> windows = new List<BaseDLNode>();
+    private List<DLNode> windows = new List<DLNode>();
 
     private Vector2 mousePos;
 
-    private BaseDLNode selectedNode;
+    private DLNode selectedNode;
 
     private bool makeTransitionMode = false;
 
@@ -18,28 +18,35 @@ public class DLNodeEditor : EditorWindow {
         DLNodeEditor editor = EditorWindow.GetWindow<DLNodeEditor>();
     }
 
+
+    public int CheckIfSelected() {
+        for (int i = 0; i < windows.Count; i++) {
+            if (windows[i].rect.Contains(mousePos)) {
+                return i;
+            }
+        }
+        return -1;
+    }
     private void OnGUI() {
         Event e = Event.current;
 
         mousePos = e.mousePosition;
-
+        //Right mouse click when not in transition
         if (e.button == 1 && !makeTransitionMode) {
             if (e.type == EventType.MouseDown){
                 bool clickedOnWindow = false;
                 int selectedIndex = -1;
 
-                for (int i = 0; i < windows.Count; i++) {
-                    if (windows[i].windowRect.Contains(mousePos)) {
-                        selectedIndex = i;
-                        clickedOnWindow = true;
-                        break;
-                    }
+                if(CheckIfSelected() != -1) {
+                    clickedOnWindow = true;
+                    selectedIndex = CheckIfSelected();
                 }
+
                 if (!clickedOnWindow) {
                     GenericMenu menu = new GenericMenu();
 
                     menu.AddItem(new GUIContent("Add Dialogue Node"), false, ContextCallback, "DLNode");
-                    menu.AddItem(new GUIContent("Add Event Node"), false, ContextCallback, "EventNode");
+                    //menu.AddItem(new GUIContent("Add Event Node"), false, ContextCallback, "EventNode");
 
                     menu.ShowAsContext();
                     e.Use();
@@ -47,8 +54,6 @@ public class DLNodeEditor : EditorWindow {
                 else {
                     GenericMenu menu = new GenericMenu();
 
-                    menu.AddItem(new GUIContent("Make transition"), false, ContextCallback, "makeTransition");
-                    menu.AddSeparator(" ");
                     menu.AddItem(new GUIContent("Delete Node"), false, ContextCallback, "deleteNode");
 
                     menu.ShowAsContext();
@@ -56,59 +61,18 @@ public class DLNodeEditor : EditorWindow {
                 }
             }
         }
-        else if(e.button == 0 && e.type == EventType.mouseDown && makeTransitionMode) {
-            bool clickedOnWindow = false;
-            int selectedIndex = -1;
-
-            for (int i = 0; i < windows.Count; i++) {
-                if (windows[i].windowRect.Contains(mousePos)) {
-                    selectedIndex = i;
-                    clickedOnWindow = true;
-                    break;
-                }
-            }
-            if(clickedOnWindow && !windows[selectedIndex].Equals(selectedNode)){
-                windows[selectedIndex].SetInput((BaseDLInputNode)selectedNode, mousePos);
-                makeTransitionMode = false;
-                selectedNode = null;
-            }
-            if (!clickedOnWindow) {
-                makeTransitionMode = false;
-                selectedNode = null;
-            }
-            e.Use();
-        }
-        else if (e.button == 0 && e.type == EventType.MouseDown && !makeTransitionMode) {
-            bool clickedOnWindow = false;
-            int selectedIndex = -1;
-
-            for (int i = 0; i < windows.Count; i++) {
-                if (windows[i].windowRect.Contains(mousePos)) {
-                    selectedIndex = i;
-                    clickedOnWindow = true;
-                    break;
-                }
-            }
-            if (clickedOnWindow) {
-                BaseDLInputNode nodeTochange = windows[selectedIndex].ClickedOnInput(mousePos);
-                if(nodeTochange != null) {
-                    selectedNode = nodeTochange;
-                    makeTransitionMode = true;
-                }
-            }
-        }
         if (makeTransitionMode && selectedNode != null) {
             Rect mouseRect = new Rect(e.mousePosition.x, e.mousePosition.y, 10, 10);
-            DrawNodeCurve(selectedNode.windowRect, mouseRect);
+            DrawNodeCurve(selectedNode.rect, mouseRect);
             Repaint();
         }
-        foreach(BaseDLNode n in windows) {
+        foreach(DLNode n in windows) {
             n.DrawCurves();
         }
         BeginWindows();
 
         for(int i = 0; i <  windows.Count; i++) {
-            windows[i].windowRect = GUI.Window(i, windows[i].windowRect, DrawNodeWindow, windows[i].windowTitle);
+            windows[i].rect = GUI.Window(i, windows[i].rect, DrawNodeWindow, windows[i].windowTitle);
         }
         EndWindows();
     }
@@ -122,11 +86,11 @@ public class DLNodeEditor : EditorWindow {
 
         if (clb.Equals("DLNode")) { 
             DLNode node = new DLNode();
-            node.windowRect = new Rect(mousePos.x, mousePos.y, 500, 150);
+            node.rect = new Rect(mousePos.x, mousePos.y, 500, 150);
 
             windows.Add(node);
         }
-        else if (clb.Equals("EventNode")) {
+        /*else if (clb.Equals("EventNode")) {
             EventNode node = new EventNode();
             node.windowRect = new Rect(mousePos.x, mousePos.y, 200, 200);
 
@@ -147,21 +111,21 @@ public class DLNodeEditor : EditorWindow {
                 makeTransitionMode = true;
             }
         }
+        */
         else if(clb.Equals("deleteNode")){
             bool clickedOnWindow = false;
             int selectedIndex = -1;
-            for (int i = 0; i < windows.Count; i++) {
-                if (windows[i].windowRect.Contains(mousePos)) {
-                    selectedIndex = i;
-                    clickedOnWindow = true;
-                    break;
-                }
+
+            if (CheckIfSelected() != -1) {
+                clickedOnWindow = true;
+                selectedIndex = CheckIfSelected();
             }
+
             if (clickedOnWindow) {
-                BaseDLNode node = windows[selectedIndex];
+                DLNode node = windows[selectedIndex];
                 windows.RemoveAt(selectedIndex);
 
-                foreach(BaseDLNode n in windows) {
+                foreach(DLNode n in windows) {
                     n.NodeDeleted(node);
                 }
             }
@@ -179,5 +143,11 @@ public class DLNodeEditor : EditorWindow {
             Handles.DrawBezier(startPos, endPos, startTan, endTan, shadowC, null, (i + 1) * 5);
         }
         Handles.DrawBezier(startPos, endPos, startTan, endTan, Color.black, null, 1);
+    }
+    public void OnClickOutPoint(ConnectionPoint outPoint) {
+        Debug.Log("out");
+    }
+    public void OnClickInPoint(ConnectionPoint inPoint) {
+
     }
 }
