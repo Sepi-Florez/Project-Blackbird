@@ -14,11 +14,11 @@ public class ConnectionPoint {
 
     public Action<ConnectionPoint> OnClickConnectionPoint;
 
-    public ConnectionPoint(DLNode node, ConnectionPointType type, GUIStyle style /*Action<ConnectionPoint> OnClickConnectionPoint*/) {
+    public ConnectionPoint(DLNode node, ConnectionPointType type, GUIStyle style, Action<ConnectionPoint> OnClickConnectionPoint) {
         this.node = node;
         this.type = type;
         this.style = style;
-        //this.OnClickConnectionPoint = OnClickConnectionPoint;
+        this.OnClickConnectionPoint = OnClickConnectionPoint;
         rect = new Rect(0, 0, 10f, 20f);
     }
 
@@ -27,11 +27,30 @@ public class ConnectionPoint {
 
         switch (type) {
             case ConnectionPointType.In:
-                rect.x = node.rect.x - rect.width + 8f;
+                rect.x = node.rect.x - rect.width + -7f;
                 break;
 
             case ConnectionPointType.Out:
-                rect.x = node.rect.x + node.rect.width - 8f;
+                rect.x = node.rect.x + node.rect.width - -6f;
+                break;
+        }
+
+        if (GUI.Button(rect, "", style)) {
+            if (OnClickConnectionPoint != null) {
+                OnClickConnectionPoint(this);
+            }
+        }
+    }
+    public void Draw2(int i) {
+        rect.y = i;
+
+        switch (type) {
+            case ConnectionPointType.In:
+                rect.x = node.rect.x - rect.width + -7f;
+                break;
+
+            case ConnectionPointType.Out:
+                rect.x = node.rect.x + node.rect.width - -10f;
                 break;
         }
 
