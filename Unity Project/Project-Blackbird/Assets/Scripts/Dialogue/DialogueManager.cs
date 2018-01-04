@@ -8,7 +8,7 @@ public class DialogueManager : MonoBehaviour {
     //Main Variables
     public static DialogueManager thisManager;
 
-    private Dialogue currentDialogue;
+    private Dialogue currDL;
 
     private Queue<string> sentences = new Queue<string>();
 
@@ -45,49 +45,64 @@ public class DialogueManager : MonoBehaviour {
     #endregion
     // Registers if players pressed the desired button or chat window to procceed with the dialogue. If the dialogue is at its end, this will call the EndDialogue function
     public void Click() {
-        NextDialogue();
+        NextSentence();
     }
     // Start a new conversation with the given dialogue object
-    public void StartDialogue(Dialogue dialogue) {
-        currentDialogue = dialogue;
+    public void ReadDialogue(Dialogue dialogue) {
+        currDL = dialogue;
         print("Starting Conversation with " + dialogue.name);
         nameText.text = dialogue.name;
         sentences.Clear();
-        foreach(string sentence in dialogue.sentences) {
-            sentences.Enqueue(sentence);
+        switch (currDL.type) {
+            case (Dialogue.TypeDL)0:
+                foreach (string sentence in dialogue.sentences) {
+                    sentences.Enqueue(sentence);
+
+                }
+                NextSentence();
+                break;
+            case (Dialogue.TypeDL)1:
+                sentences.Enqueue(currDL.question);
+                NextSentence();
+                break;
+            case (Dialogue.TypeDL)2:
+                events.Add(currDL.onEnd);
+                break;
         }
-        events.Add(currentDialogue.onEnd);
-        NextDialogue();
     }
     //Changes Dialogue to the next sentence in queue or if the previous sentence isn't done loading yet it will complete it.
     //This will also check if there are no sentences left and then call upon the EndDialogue function
-    public void NextDialogue() {
-        if (!loaded) {
-            StopAllCoroutines();
-            dialogueText.text = currentSentence;
-            loaded = true;
-            print("Loading next sentence");
-            return;
+    public void NextSentence() {
+        if (!asking) {
+            if (!loaded) {
+                StopAllCoroutines();
+                dialogueText.text = currentSentence;
+                loaded = true;
+                print("Loading next sentence");
+                return;
+            }
+            if (sentences.Count == 0 && currDL.nextDialogue != null) {
+                print("Loading Answers");
+                ReadDialogue(currDL.nextDialogue);
+                return;
+            }
+            loaded = false;
+            currentSentence = sentences.Dequeue();
+            StartCoroutine(TypeSentence(currentSentence));
+            print("Next Sentence");
         }
-        if(sentences.Count == 0 && currentDialogue.options && !asking) {
-            print("Loading Answers");
-            ActivateAnswers(currentDialogue.answers.Length);
-            return;
+        else {
+            print("Waiting for response from player");
         }
-        else if(sentences.Count == 0 && !asking) {
-            EndDialogue();
-            return;
-        }
-        loaded = false;
-        currentSentence = sentences.Dequeue();
-        StartCoroutine(TypeSentence(currentSentence));
     }
-    public void ActivateAnswers(int count) {
+    // Answers
+
+    public void ActivateAnswers() {
         asking = true;
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < currDL.answers.Length; i++) {
             answerObjects[answerObjects.Count - 1 - i].alpha = 1;
             answerObjects[answerObjects.Count - 1 - i].interactable = true;
-            answerObjects[answerObjects.Count - 1 - i].transform.GetChild(0).GetComponent<Text>().text = currentDialogue.answers[i];
+            answerObjects[answerObjects.Count - 1 - i].transform.GetChild(0).GetComponent<Text>().text = currDL.answers[i];
         }
     }
     public void DisableAnswers() {
@@ -99,8 +114,9 @@ public class DialogueManager : MonoBehaviour {
     }
     public void Answer(int answer) {
         DisableAnswers();
-        StartDialogue(currentDialogue.answerDialogues[answer]);
+        ReadDialogue(currDL.answerDialogues[answer]);
     }
+
     //Destroys dialogue object
     public void EndDialogue() {
         foreach(UnityEvent ev in events){
@@ -108,7 +124,7 @@ public class DialogueManager : MonoBehaviour {
         }
         Destroy(dialogueObject);
     }
-    public void Test() {
+    public static void Test() {
         print("Event is activated!");
     }
 
@@ -120,6 +136,9 @@ public class DialogueManager : MonoBehaviour {
             yield return new WaitForSeconds(textSpeed);
         }
         loaded = true;
+        if(currDL.type == (Dialogue.TypeDL)1) {
+            ActivateAnswers();
+        }
     }
 
 }

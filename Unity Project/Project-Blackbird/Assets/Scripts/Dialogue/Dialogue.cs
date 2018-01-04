@@ -3,14 +3,24 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-public class Dialogue {
-    public string name;
+[CreateAssetMenu(fileName = "NewDialogue", menuName = "Dialogue")]
+public class Dialogue : ScriptableObject {
+    public enum TypeDL { Sentences, Answers, Event };
+    public TypeDL type;
+
+    //Sentences
+    public new string name;
     [TextArea(3,10)]
     public string[] sentences;
-    public bool options;
+
+    //Answers
+    public string question;
     public string[] answers;
     public Dialogue[] answerDialogues;
-    public bool _continue;
-    public Dialogue nextDialogue;
+
+    //Event
     public UnityEvent onEnd = new UnityEvent();
+
+    //Multiple
+    public Dialogue nextDialogue;
 }

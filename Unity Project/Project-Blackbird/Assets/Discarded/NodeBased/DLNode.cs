@@ -88,6 +88,7 @@ public class DLNode : ScriptableObject{
                     outPoint.Draw();
                     break;
                 case (NodeType)1:
+                    inPoint.Draw();
                     if (answers != null) {
                         foreach (string answer in answers) {
                             points = new ConnectionPoint[answers.Length];

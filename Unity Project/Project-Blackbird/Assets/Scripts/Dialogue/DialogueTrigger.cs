@@ -7,6 +7,6 @@ public class DialogueTrigger : MonoBehaviour {
     public Dialogue dialogue;
     
     public void TriggerDialogue() {
-        DialogueManager.thisManager.StartDialogue(dialogue);
+        DialogueManager.thisManager.ReadDialogue(dialogue);
     }
 }

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="500"
+   height="500"
+   viewBox="0 0 132.29167 132.29167"
+   version="1.1"
+   id="svg8"
+   inkscape:export-filename="C:\Users\David\Documents\GitHub\Project-Blackbird\Unity Project\Project-Blackbird\Assets\Sprites\temp\bush.png"
+   inkscape:export-xdpi="300"
+   inkscape:export-ydpi="300"
+   inkscape:version="0.92.1 r15371"
+   sodipodi:docname="Brush.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="4.7027457"
+     inkscape:cy="199.59536"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     units="px"
+     inkscape:window-width="1920"
+     inkscape:window-height="1057"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-164.70832)">
+    <path
+       style="fill:#6dc07d;stroke:#000000;stroke-width:1.01000002;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;fill-opacity:1"
+       d="m 24.581882,295.27639 84.498218,0.0466 c 0,0 3.12957,-20.83835 12.32834,-38.02296 6.92547,-12.93776 -15.37977,3.32626 -15.37977,3.32626 0,0 18.89871,-38.2422 8.06841,-40.37396 -6.39021,-1.2578 -18.899655,15.45396 -18.899655,15.45396 0,0 7.554165,-51.35377 -2.129994,-52.71471 -14.473173,-2.03394 -25.852788,42.3451 -25.852788,42.3451 0,0 -13.22249,-50.8974 -27.382718,-51.28279 -10.475512,-0.28511 -2.154662,56.35727 -2.154662,56.35727 0,0 -15.831962,-25.274 -25.21369,-19.31912 -9.0933339,5.77183 8.959595,55.23356 8.959595,55.23356 0,0 -16.3801402,-11.78297 -9.439147,2.42946 6.485918,13.28061 12.597861,26.52129 12.597861,26.52129 z"
+       id="path4485"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccscscscscscscc" />
+  </g>
+</svg>
