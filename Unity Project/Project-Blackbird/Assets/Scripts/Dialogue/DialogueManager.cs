@@ -38,7 +38,7 @@ public class DialogueManager : MonoBehaviour {
         }
     }
     public void Update() {
-        if (Input.GetKeyDown(KeyCode.K)){
+        if (Input.GetKeyDown(KeyCode.Return)){
             Click();
         }
     }
@@ -50,7 +50,9 @@ public class DialogueManager : MonoBehaviour {
     // Start a new conversation with the given dialogue object
     public void ReadDialogue(Dialogue dialogue) {
         currDL = dialogue;
-        print("Starting Conversation with " + dialogue.name);
+        if(dialogue == null) {
+            return;
+        }
         nameText.text = dialogue.name;
         sentences.Clear();
         switch (currDL.type) {
@@ -73,15 +75,25 @@ public class DialogueManager : MonoBehaviour {
     //Changes Dialogue to the next sentence in queue or if the previous sentence isn't done loading yet it will complete it.
     //This will also check if there are no sentences left and then call upon the EndDialogue function
     public void NextSentence() {
+        if (currDL == null) {
+            return;
+        }
         if (!asking) {
             if (!loaded) {
                 StopAllCoroutines();
                 dialogueText.text = currentSentence;
                 loaded = true;
                 print("Loading next sentence");
+                if (currDL.type == (Dialogue.TypeDL)1 && sentences.Count == 0) {
+                    ActivateAnswers();
+                }
                 return;
             }
-            if (sentences.Count == 0 && currDL.nextDialogue != null) {
+            if (currDL.type == (Dialogue.TypeDL)1 && sentences.Count == 0) {
+                ActivateAnswers();
+                return;
+            }
+            if (sentences.Count == 0) {
                 print("Loading Answers");
                 ReadDialogue(currDL.nextDialogue);
                 return;

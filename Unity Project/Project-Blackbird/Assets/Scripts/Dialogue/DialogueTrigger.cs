@@ -5,7 +5,11 @@ using UnityEngine;
 public class DialogueTrigger : MonoBehaviour {
     [SerializeField]
     public Dialogue dialogue;
-    
+
+    public void Start() {
+        TriggerDialogue();
+    }
+
     public void TriggerDialogue() {
         DialogueManager.thisManager.ReadDialogue(dialogue);
     }

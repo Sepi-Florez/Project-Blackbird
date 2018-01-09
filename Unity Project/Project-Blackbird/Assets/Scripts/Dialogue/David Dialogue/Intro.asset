@@ -9,11 +9,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e32a5f7539bb2614284ce9b2a79ceb88, type: 3}
-  m_Name: David - Types
+  m_Name: Intro
   m_EditorClassIdentifier: 
   type: 0
-  name: 
-  sentences: []
+  name: David
+  sentences:
+  - Hey there! Welcome to my dialogue system.
+  - This system is made from the scriptableObject class called Dialogue.
+  - The Dialogue class can be read to fill in UI elements like name plates and text
+    boxes
+  - This is done by the DialogueManager class
+  - The Dialogue class has an enum which specifies which action follows.
   question: 
   answers: []
   answerDialogues: []
@@ -22,4 +28,4 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-  nextDialogue: {fileID: 0}
+  nextDialogue: {fileID: 11400000, guid: f18cc77943847ad479283e7df4090975, type: 2}

@@ -9,15 +9,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e32a5f7539bb2614284ce9b2a79ceb88, type: 3}
-  m_Name: David - 01
+  m_Name: Event
   m_EditorClassIdentifier: 
   type: 0
   name: David
   sentences:
-  - Hey there! Welcome to my dialogue system.
-  - This system is made from the scriptableObject class called Dialogue.
-  - The Dialogue class has a type which specifies which action follows.
-  - 'There are 3 types : Sentences, Answers and Event'
+  - The Event type is used to call upon other manager to add items or to progress
+    quests
+  - All these events will be invoked at the end of the conversation.
   question: 
   answers: []
   answerDialogues: []
@@ -26,4 +25,4 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-  nextDialogue: {fileID: 0}
+  nextDialogue: {fileID: 11400000, guid: 4082c3cb381e4274a92bd38d9dcb9b36, type: 2}
